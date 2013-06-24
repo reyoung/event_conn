@@ -10,7 +10,7 @@ This package is compatible the go 1 standard, you can install or update by using
 
 ### Usage
 
-The document is [here|http://godoc.org/github.com/reyoung/event_conn]
+The document is [here](http://godoc.org/github.com/reyoung/event_conn)
 
 ### Bug/Issue
 
