@@ -14,12 +14,20 @@ func bindDial(fun func() (net.Conn, error)) (ec *EventConn, err error) {
 	}
 }
 
+/*
+Helper method for Dial EventConn
+*/
 func Dial(network string, address string) (*EventConn, error) {
 	return bindDial(func() (net.Conn, error) {
 		return net.Dial(network, address)
 	})
 }
 
+/*
+Helper method for DialTCP EventConn
+
+Note: In this method, TCP MSS will be setted as READ_BUFFER_CAPACITY
+*/
 func DialTCP(network string, laddr *net.TCPAddr, raddr *net.TCPAddr) (*EventConn, error) {
 	return bindDial(func() (conn net.Conn, err error) {
 		tcp_conn, err := net.DialTCP(network, laddr, raddr)
@@ -34,6 +42,11 @@ func DialTCP(network string, laddr *net.TCPAddr, raddr *net.TCPAddr) (*EventConn
 	})
 }
 
+/*
+Helper method for DialUDP EventConn
+
+Note: In this method, UDP ReadBuffer will be setted as READ_BUFFER_CAPACITY
+*/
 func DialUDP(network string, laddr, raddr *net.UDPAddr) (*EventConn, error) {
 	return bindDial(func() (conn net.Conn, err error) {
 		udp_conn, err := net.DialUDP(network, laddr, raddr)
