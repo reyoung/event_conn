@@ -18,7 +18,6 @@ net.DialXXX.
 package event_conn
 
 import (
-	"log"
 	"net"
 	"time"
 )
@@ -91,7 +90,6 @@ func (ec *EventConn) recv_loop() {
 			} else if sz == capacity {
 				retv = append(retv, buffer...)
 			} else {
-				log.Print(sz, " ", capacity, " \n")
 				if len(retv) != 0 {
 					ec.Recv <- append(retv, buffer[0:sz]...)
 				} else {
