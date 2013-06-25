@@ -122,3 +122,28 @@ func (ec *EventConn) Close() (err error) {
 	ec.isClosed = true
 	return
 }
+
+/*
+Custom Check Message Complete while recieve.
+Note: This method is blocked, if you need an asynchronize version, try RecieveChanUntil
+*/
+func (ec *EventConn) RecieveUntil(checker func([]byte) bool) []byte {
+	msg := make([]byte, 0)
+	for !checker(msg) {
+		tmp := <-ec.Recv
+		msg = append(msg, tmp...)
+	}
+	return msg
+}
+
+/*
+Custom Check Message Complete while recieve.
+*/
+func (ec *EventConn) RecieveChanUntil(checker func([]byte) bool) chan []byte {
+	retv := make(chan []byte)
+	go func() {
+		msg := ec.RecieveUntil(checker)
+		retv <- msg
+	}()
+	return retv
+}
